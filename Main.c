@@ -3,22 +3,24 @@
 #include <string.h>
 #include <locale.h>
 
-struct EstruturaRemedio{
+typedef struct {
       int codigo;
       char nome[200];
       float Preco;
       char TipoRemedio;
       char CRM[200];
-};
-struct EstruturaRemedio Cadastrar;
-//------------------------global----------------------------------------
+}EstruturaRemedio;
+
+
+EstruturaRemedio Cadastrar;
+EstruturaRemedio Ler;
 
 int main()
 {
 	setlocale(LC_ALL, "Portuguese");
     FILE *Pont_Arq;
 
-    Pont_Arq = fopen("arquivo", "wb");
+    Pont_Arq = fopen("arquivo", "ab+");
     if (Pont_Arq == NULL){
     //printf("ERRO! O arquivo não foi aberto!\n");
     }
@@ -26,7 +28,7 @@ int main()
     {
     //printf("O arquivo foi aberto com sucesso!");
     }
-    
+
     //Menu
     int Selecao;
     do{
@@ -40,53 +42,56 @@ int main()
         printf("4 - Consultar um Medicamento\n");
         printf("5 - Imprimir as Informações de um Medicamento\n");
         printf("0 - Sair do Sistema\n");
-        
+
         //Lendo a operação
         scanf("%d",&Selecao);
-        
+
         //Executando a operação
         switch(Selecao){
             case 1 :
-                
+
                 printf("Digite o Código do Novo Medicamento\n");
                 scanf("%d", &Cadastrar.codigo);
-                
+
                 printf("Digite o Nome do Novo Medicamento\n");
                 scanf("%s", Cadastrar.nome);
 
                 printf("Digite o Preço do Novo Medicamento\n");
                 scanf("%f", &Cadastrar.Preco);
-                
-                printf("Necessita a Retenção da Receita?\n S - Sim \n N - Não\n");
-                scanf("%c", &Cadastrar.TipoRemedio);
-                
+
+                printf("Necessita a Retenção da Receita?\nS - Sim \nN - Não\n");
+                scanf("%s", &Cadastrar.TipoRemedio);
+
                 if(Cadastrar.TipoRemedio == 'S'){
-                    printf("Digite o Código do Novo Medicamento\n");
+                    printf("Digite o CRM do Médico que receitou:\n");
                     scanf("%s",Cadastrar.CRM);
                 }
-                
-                printf("%d\n",Cadastrar.codigo);
-                printf("%s\n",Cadastrar.nome);
-                printf("%f\n",Cadastrar.Preco);
-                printf("%c\n",Cadastrar.TipoRemedio);
-                printf("%s\n",Cadastrar.CRM);
+                fwrite(&Cadastrar, sizeof(EstruturaRemedio), 1, Pont_Arq);
+                fread(&Ler, sizeof(EstruturaRemedio), 1, Pont_Arq);
+                printf("Comeca Aqui\n");
+                printf("%d\n",Ler.codigo);
+                printf("%s\n",Ler.nome);
+                printf("%f\n",Ler.Preco);
+                printf("%c\n",Ler.TipoRemedio);
+                printf("%s\n",Ler.CRM);
+                fclose(Pont_Arq);
                 break;
-            
+
             case 2:
                 printf("%d\n",Selecao);
                 break;
             case 3:
                 printf("%d\n",Selecao);
-                break;    
+                break;
             case 4:
                 printf("%d\n",Selecao);
-                break;  
+                break;
             case 5:
                 printf("%d\n",Selecao);
                 //ImprimeTodos(Pont_Arq);
-                break;  
+                break;
         }
-        
+
     }while(Selecao!=0);
     system("pause");
     return 0;
