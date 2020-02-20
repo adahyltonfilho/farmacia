@@ -11,7 +11,7 @@ struct EstruturaRemedio{
       char CRM[200];
 };
 struct EstruturaRemedio Cadastrar;
- 
+//------------------------global----------------------------------------
 
 int main()
 {
