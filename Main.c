@@ -3,6 +3,8 @@
 #include <string.h>
 #include <locale.h>
 
+//------globbal------
+
 typedef struct {
       int codigo;
       char nome[200];
@@ -11,9 +13,11 @@ typedef struct {
       char CRM[200];
 }EstruturaRemedio;
 
-
 EstruturaRemedio Cadastrar;
 EstruturaRemedio Ler;
+//------globbal------
+
+
 
 int main()
 {
