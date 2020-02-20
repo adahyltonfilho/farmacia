@@ -3,42 +3,19 @@
 #include <string.h>
 #include <locale.h>
 
-typedef struct {
+struct EstruturaRemedio{
       int codigo;
       char nome[200];
       float Preco;
       char TipoRemedio;
       char CRM[200];
-} EstruturaRemedio;
-EstruturaRemedio Remedio;
+};
+struct EstruturaRemedio Cadastrar;
  
-int CadastrarNovoRemedio(){
-     
-}
- 
-int ExcluirRemedio(){
-     
-}
 
-int EditarRemedio(){
-    
-}
-
-int ContaRegistro(FILE Ponteiro){
-    int Qtd = 0;
-    while(!feof(Ponteiro)){
-        Qtd++;
-    }
-    
-    Return Qtd;
-}
-
-
-void ImprimeTodos(FILE Ponteiro){
-    int QtdLinhas = ContaRegistro(Ponteiro);
-}
 int main()
 {
+	setlocale(LC_ALL, "Portuguese");
     FILE *Pont_Arq;
 
     Pont_Arq = fopen("arquivo", "wb");
@@ -70,23 +47,22 @@ int main()
         //Executando a operação
         switch(Selecao){
             case 1 :
-                EstruturaRemedio Cadastrar;
                 
                 printf("Digite o Código do Novo Medicamento\n");
-                scanf("%d",&Cadastrar.codigo);
+                scanf("%d", &Cadastrar.codigo);
                 
                 printf("Digite o Nome do Novo Medicamento\n");
-                scanf("%s",&Cadastrar.nome);
+                scanf("%s", Cadastrar.nome);
 
                 printf("Digite o Preço do Novo Medicamento\n");
-                scanf("%f",&Cadastrar.Preco);
+                scanf("%f", &Cadastrar.Preco);
                 
                 printf("Necessita a Retenção da Receita?\n S - Sim \n N - Não\n");
-                scanf("%s",&Cadastrar.TipoRemedio);
+                scanf("%c", &Cadastrar.TipoRemedio);
                 
                 if(Cadastrar.TipoRemedio == 'S'){
                     printf("Digite o Código do Novo Medicamento\n");
-                    scanf("%s",&Cadastrar.CRM);
+                    scanf("%s",Cadastrar.CRM);
                 }
                 
                 printf("%d\n",Cadastrar.codigo);
@@ -107,7 +83,7 @@ int main()
                 break;  
             case 5:
                 printf("%d\n",Selecao);
-                ImprimeTodos(Pont_Arq);
+                //ImprimeTodos(Pont_Arq);
                 break;  
         }
         
