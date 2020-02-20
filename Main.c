@@ -4,7 +4,6 @@
 #include <locale.h>
 
 //------globbal------
-
 typedef struct {
       int codigo;
       char nome[200];
@@ -53,7 +52,6 @@ int main()
         //Executando a operação
         switch(Selecao){
             case 1 :
-
                 printf("Digite o Código do Novo Medicamento\n");
                 scanf("%d", &Cadastrar.codigo);
 
@@ -71,7 +69,12 @@ int main()
                     scanf("%s",Cadastrar.CRM);
                 }
                 fwrite(&Cadastrar, sizeof(EstruturaRemedio), 1, Pont_Arq);
+                
+                fclose(Pont_Arq);
+                Pont_Arq = fopen("arquivo", "ab+");
                 fread(&Ler, sizeof(EstruturaRemedio), 1, Pont_Arq);
+                fseek(Pont_Arq,sizeof(EstruturaRemedio), 0);
+                
                 printf("Comeca Aqui\n");
                 printf("%d\n",Ler.codigo);
                 printf("%s\n",Ler.nome);
