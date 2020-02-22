@@ -20,6 +20,7 @@ EstruturaRemedio Ler;
 
 int main()
 {
+	int cont = 1;
 	setlocale(LC_ALL, "Portuguese");
     FILE *Pont_Arq;
 
@@ -72,15 +73,24 @@ int main()
                 
                 fclose(Pont_Arq);
                 Pont_Arq = fopen("arquivo", "ab+");
-                fread(&Ler, sizeof(EstruturaRemedio), 1, Pont_Arq);
-                fseek(Pont_Arq,sizeof(EstruturaRemedio), 0);
                 
-                printf("Comeca Aqui\n");
-                printf("%d\n",Ler.codigo);
-                printf("%s\n",Ler.nome);
-                printf("%f\n",Ler.Preco);
-                printf("%c\n",Ler.TipoRemedio);
-                printf("%s\n",Ler.CRM);
+                //fseek(Pont_Arq, 0, SEEK_SET);
+                while(!(feof(Pont_Arq)))
+                {
+					fread(&Ler, sizeof(EstruturaRemedio), 1, Pont_Arq);
+					//fseek(Pont_Arq,cont, SEEK_CUR);
+					if (!(feof(Pont_Arq))){
+					printf("ITEM N %d: \n", cont);
+					printf("CODIGO: %d\n",Ler.codigo);
+					printf("NOME: %s\n",Ler.nome);
+					printf("PRECO: R$ %.2f\n",Ler.Preco);
+					printf("TRIBUTADO: %c\n",Ler.TipoRemedio);
+					printf("%s\n",Ler.CRM);
+					cont++;
+					}
+                }
+                cont = 1;
+                
                 fclose(Pont_Arq);
                 break;
 
