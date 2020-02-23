@@ -14,8 +14,54 @@ typedef struct {
 
 EstruturaRemedio Cadastrar;
 EstruturaRemedio Ler;
+EstruturaRemedio Excluir;
 //------globbal------
 
+
+//----------------módulo exclusão de registro----------------
+void Mod_Exclusao()
+{
+	int codigo_local = 0;
+	FILE *arq_local;
+	FILE *arq_local_aux;
+	arq_local = fopen("arquivo", "ab+");
+	arq_local_aux = fopen("arquivo_aux", "ab+");
+	int cont = 1;
+	
+	printf("Digite o Código do Medicamento Para Exclusão\n");
+    scanf("%d", &codigo_local);
+	
+	while(!(feof(arq_local)))
+	{
+		fread(&Excluir, sizeof(EstruturaRemedio), 1, arq_local);
+		if (!(feof(arq_local)) && Excluir.codigo != codigo_local)
+		{
+			fwrite(&Excluir, sizeof(EstruturaRemedio), 1, arq_local_aux);
+		}
+	}
+	fclose(arq_local);
+	fclose(arq_local_aux);
+	
+	
+	arq_local_aux = fopen("arquivo_aux", "ab+");
+	while(!(feof(arq_local_aux)))
+	{
+		fread(&Excluir, sizeof(EstruturaRemedio), 1, arq_local_aux);
+		//fseek(Pont_Arq,cont, SEEK_CUR);
+		if (!(feof(arq_local_aux))){
+		printf("ITEM N %d: \n", cont);
+		printf("CODIGO: %d\n",Excluir.codigo);
+		printf("NOME: %s\n",Excluir.nome);
+		printf("PRECO: R$ %.2f\n",Excluir.Preco);
+		printf("TRIBUTADO: %c\n",Excluir.TipoRemedio);
+		printf("%s\n",Excluir.CRM);
+		cont++;
+		}
+	}
+	fclose(arq_local_aux);
+	
+}
+//----------------módulo exclusão registro----------------
 
 
 int main()
@@ -26,11 +72,10 @@ int main()
 
     Pont_Arq = fopen("arquivo", "ab+");
     if (Pont_Arq == NULL){
-    //printf("ERRO! O arquivo não foi aberto!\n");
+		//printf("ERRO! O arquivo não foi aberto!\n");
     }
-    else
-    {
-    //printf("O arquivo foi aberto com sucesso!");
+    else {
+		//printf("O arquivo foi aberto com sucesso!");
     }
 
     //Menu
@@ -53,23 +98,23 @@ int main()
         //Executando a operação
         switch(Selecao){
             case 1 :
-                //printf("Digite o Código do Novo Medicamento\n");
-                //scanf("%d", &Cadastrar.codigo);
-				//
-                //printf("Digite o Nome do Novo Medicamento\n");
-                //scanf("%s", Cadastrar.nome);
-				//
-                //printf("Digite o Preço do Novo Medicamento\n");
-                //scanf("%f", &Cadastrar.Preco);
-				//
-                //printf("Necessita a Retenção da Receita?\nS - Sim \nN - Não\n");
-                //scanf("%s", &Cadastrar.TipoRemedio);
-				//
-                //if(Cadastrar.TipoRemedio == 'S'){
-                //    printf("Digite o CRM do Médico que receitou:\n");
-                //    scanf("%s",Cadastrar.CRM);
-                //}
-                //fwrite(&Cadastrar, sizeof(EstruturaRemedio), 1, Pont_Arq);
+                printf("Digite o Código do Novo Medicamento\n");
+                scanf("%d", &Cadastrar.codigo);
+				
+                printf("Digite o Nome do Novo Medicamento\n");
+                scanf("%s", Cadastrar.nome);
+				
+                printf("Digite o Preço do Novo Medicamento\n");
+                scanf("%f", &Cadastrar.Preco);
+				
+                printf("Necessita a Retenção da Receita?\nS - Sim \nN - Não\n");
+                scanf("%s", &Cadastrar.TipoRemedio);
+				
+                if(Cadastrar.TipoRemedio == 'S'){
+                    printf("Digite o CRM do Médico que receitou:\n");
+                    scanf("%s",Cadastrar.CRM);
+                }
+                fwrite(&Cadastrar, sizeof(EstruturaRemedio), 1, Pont_Arq);
                 
                 fclose(Pont_Arq);
                 Pont_Arq = fopen("arquivo", "ab+");
@@ -97,7 +142,8 @@ int main()
                 break;
 
             case 2:
-                printf("%d\n",Selecao);
+				Mod_Exclusao();
+                printf("-------------\\-------------\\-------------\n\n");
                 break;
             case 3:
                 printf("%d\n",Selecao);
