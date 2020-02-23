@@ -53,28 +53,29 @@ int main()
         //Executando a operação
         switch(Selecao){
             case 1 :
-                printf("Digite o Código do Novo Medicamento\n");
-                scanf("%d", &Cadastrar.codigo);
-
-                printf("Digite o Nome do Novo Medicamento\n");
-                scanf("%s", Cadastrar.nome);
-
-                printf("Digite o Preço do Novo Medicamento\n");
-                scanf("%f", &Cadastrar.Preco);
-
-                printf("Necessita a Retenção da Receita?\nS - Sim \nN - Não\n");
-                scanf("%s", &Cadastrar.TipoRemedio);
-
-                if(Cadastrar.TipoRemedio == 'S'){
-                    printf("Digite o CRM do Médico que receitou:\n");
-                    scanf("%s",Cadastrar.CRM);
-                }
-                fwrite(&Cadastrar, sizeof(EstruturaRemedio), 1, Pont_Arq);
+                //printf("Digite o Código do Novo Medicamento\n");
+                //scanf("%d", &Cadastrar.codigo);
+				//
+                //printf("Digite o Nome do Novo Medicamento\n");
+                //scanf("%s", Cadastrar.nome);
+				//
+                //printf("Digite o Preço do Novo Medicamento\n");
+                //scanf("%f", &Cadastrar.Preco);
+				//
+                //printf("Necessita a Retenção da Receita?\nS - Sim \nN - Não\n");
+                //scanf("%s", &Cadastrar.TipoRemedio);
+				//
+                //if(Cadastrar.TipoRemedio == 'S'){
+                //    printf("Digite o CRM do Médico que receitou:\n");
+                //    scanf("%s",Cadastrar.CRM);
+                //}
+                //fwrite(&Cadastrar, sizeof(EstruturaRemedio), 1, Pont_Arq);
                 
                 fclose(Pont_Arq);
                 Pont_Arq = fopen("arquivo", "ab+");
                 
                 //fseek(Pont_Arq, 0, SEEK_SET);
+                system ("cls");
                 while(!(feof(Pont_Arq)))
                 {
 					fread(&Ler, sizeof(EstruturaRemedio), 1, Pont_Arq);
@@ -90,6 +91,7 @@ int main()
 					}
                 }
                 cont = 1;
+                
                 
                 fclose(Pont_Arq);
                 break;
