@@ -3,7 +3,7 @@
 #include <string.h>
 #include <locale.h>
 
-//------globbal------
+/*Tipos de Registros*/
 typedef struct {
       int codigo;
       char nome[200];
@@ -12,13 +12,36 @@ typedef struct {
       char CRM[200];
 }EstruturaRemedio;
 
+/*Vari·veis Globais*/
 EstruturaRemedio Cadastrar;
 EstruturaRemedio Ler;
 EstruturaRemedio Excluir;
-//------globbal------
 
 
-//----------------m√≥dulo exclus√£o de registro----------------
+/*MÈtodo que imprime Todos os Registros*/
+void ImprimeTodosRegistros(){
+    FILE *Arquivo = fopen("arquivo", "ab+");
+    int cont = 0;
+    system ("cls");
+    while(!(feof(Arquivo)))
+    {
+        fread(&Ler, sizeof(EstruturaRemedio), 1, Arquivo);
+        if (!(feof(Arquivo))){
+        printf("ITEM N∫ %d: \n", cont);
+        printf("CODIGO: %d\n",Ler.codigo);
+        printf("NOME: %s\n",Ler.nome);
+        printf("PRECO: R$ %.2f\n",Ler.Preco);
+        printf("TRIBUTADO: %c\n",Ler.TipoRemedio);
+        if(Ler.TipoRemedio == 'S'){
+        	printf("%s\n",Ler.CRM);
+		}
+        cont++;
+        }
+    }
+    fclose(Arquivo);
+}
+
+/*MÈtodo que Exclui Todos*/
 void Mod_Exclusao()
 {
 	int codigo_local = 0;
@@ -27,10 +50,10 @@ void Mod_Exclusao()
 	arq_local = fopen("arquivo", "ab+");
 	arq_local_aux = fopen("arquivo_aux", "ab+");
 	int cont = 1;
-	
+
 	printf("Digite o C√≥digo do Medicamento Para Exclus√£o\n");
     scanf("%d", &codigo_local);
-	
+
 	while(!(feof(arq_local)))
 	{
 		fread(&Excluir, sizeof(EstruturaRemedio), 1, arq_local);
@@ -41,8 +64,8 @@ void Mod_Exclusao()
 	}
 	fclose(arq_local);
 	fclose(arq_local_aux);
-	
-	
+
+
 	arq_local_aux = fopen("arquivo_aux", "ab+");
 	while(!(feof(arq_local_aux)))
 	{
@@ -59,86 +82,68 @@ void Mod_Exclusao()
 		}
 	}
 	fclose(arq_local_aux);
-	
+
 }
-//----------------m√≥dulo exclus√£o registro----------------
 
 
+/*MÈtodo Principal*/
 int main()
 {
-	int cont = 1;
 	setlocale(LC_ALL, "Portuguese");
     FILE *Pont_Arq;
 
     Pont_Arq = fopen("arquivo", "ab+");
     if (Pont_Arq == NULL){
-		//printf("ERRO! O arquivo n√£o foi aberto!\n");
+		//printf("ERRO! O arquivo n„o foi aberto!\n");
     }
     else {
 		//printf("O arquivo foi aberto com sucesso!");
     }
-
+	fclose(Pont_Arq);
+	
     //Menu
     int Selecao;
     do{
         Selecao = 0;
         //Exibindo o menu
-        printf("Sistema de Gerenciamento de F√°rmacias:\n");
-        printf("Digite o c√≥digo referente a opera√ß√£o que deseja executar:\n");
+        printf("Sistema de Gerenciamento de F·rmacias:\n");
+        printf("Digite o cdigo referente a operaÁ„o que deseja executar:\n");
         printf("1 - Cadastrar Novo Medicamento\n");
         printf("2 - Excluir um Medicamento\n");
         printf("3 - Editar um Medicamento\n");
         printf("4 - Consultar um Medicamento\n");
-        printf("5 - Imprimir as Informa√ß√µes de um Medicamento\n");
+        printf("5 - Imprimir as InformaÁıes de um Medicamento\n");
         printf("0 - Sair do Sistema\n");
 
-        //Lendo a opera√ß√£o
+        //Lendo a operaÁ„o
         scanf("%d",&Selecao);
 
-        //Executando a opera√ß√£o
+        //Executando a operaÁ„o
         switch(Selecao){
             case 1 :
-                printf("Digite o C√≥digo do Novo Medicamento\n");
+    			//Abre o Arquivo
+            	Pont_Arq = fopen("arquivo", "ab+");
+            	
+            	//Solicita as InformaÁıes para Cadastrar
+                printf("Digite o CÛdigo do Novo Medicamento\n");
                 scanf("%d", &Cadastrar.codigo);
-				
+
                 printf("Digite o Nome do Novo Medicamento\n");
                 scanf("%s", Cadastrar.nome);
-				
+
                 printf("Digite o Pre√ßo do Novo Medicamento\n");
                 scanf("%f", &Cadastrar.Preco);
-				
+
                 printf("Necessita a Reten√ß√£o da Receita?\nS - Sim \nN - N√£o\n");
                 scanf("%s", &Cadastrar.TipoRemedio);
-				
+
                 if(Cadastrar.TipoRemedio == 'S'){
-                    printf("Digite o CRM do M√©dico que receitou:\n");
+                    printf("Digite o CRM do MÈdico que receitou:\n");
                     scanf("%s",Cadastrar.CRM);
                 }
-                fwrite(&Cadastrar, sizeof(EstruturaRemedio), 1, Pont_Arq);
-                
+                fwrite(&Cadastrar, sizeof(EstruturaRemedio), 2, Pont_Arq);
                 fclose(Pont_Arq);
-                Pont_Arq = fopen("arquivo", "ab+");
-                
-                //fseek(Pont_Arq, 0, SEEK_SET);
-                system ("cls");
-                while(!(feof(Pont_Arq)))
-                {
-					fread(&Ler, sizeof(EstruturaRemedio), 1, Pont_Arq);
-					//fseek(Pont_Arq,cont, SEEK_CUR);
-					if (!(feof(Pont_Arq))){
-					printf("ITEM N %d: \n", cont);
-					printf("CODIGO: %d\n",Ler.codigo);
-					printf("NOME: %s\n",Ler.nome);
-					printf("PRECO: R$ %.2f\n",Ler.Preco);
-					printf("TRIBUTADO: %c\n",Ler.TipoRemedio);
-					printf("%s\n",Ler.CRM);
-					cont++;
-					}
-                }
-                cont = 1;
-                
-                
-                fclose(Pont_Arq);
+
                 break;
 
             case 2:
@@ -152,8 +157,7 @@ int main()
                 printf("%d\n",Selecao);
                 break;
             case 5:
-                printf("%d\n",Selecao);
-                //ImprimeTodos(Pont_Arq);
+                ImprimeTodosRegistros();
                 break;
         }
 
