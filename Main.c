@@ -36,7 +36,7 @@ void ImprimeTodosRegistros(){
 			cont++;
 		}
 		else if (cont == 1){
-			printf("Arquivo sem nenhum registro de medicamento!\n");
+			printf("Arquivo sem nenhum registro de medicamento!\n\n");
 		}
     }
     fclose(Arquivo);
@@ -86,6 +86,47 @@ void Mod_Exclusao()
 
 }
 
+/*Método que Exclui Todos*/
+ExcluirTodos(){
+	FILE *Pont_Arq;
+	Pont_Arq = fopen("arquivo", "wb+");
+	printf("Registros Excluidos com Sucesso!\n\n");
+	fclose(Pont_Arq);
+}
+/*Método que Exclui um registro*/
+void ExcluiRegistro(){
+	int Op=0;
+	char confirma ='N';
+	printf("Excluir Registros de Medicamentos\n");
+	printf("1 - Excluir todos os Registros.\n");
+	printf("2 - Excluir Registros por Código.\n");
+	printf("3 - Excluir Registros por Nome.\n");
+	scanf("%d",&Op);
+	
+	switch(Op){
+		case 1 :
+			printf("Atenção, tal operação excluira os seguintes registros:\n");
+			ImprimeTodosRegistros();
+			printf("Confirma excluir todos?\n");
+			printf("S - Sim\n");
+			printf("N - Não\n");
+			scanf("%s",&confirma);
+			confirma=='S'?ExcluirTodos():printf("Operação Cancelada!\n\n");
+								
+			break;
+		case 2 :
+			
+			break;
+			
+		case 3:
+			
+			break;
+			
+		default:
+			printf("Código digitado é invalido, favor refazer a operação!\n\n");
+	}
+
+}
 
 /*Método Principal*/
 int main()
@@ -125,14 +166,16 @@ int main()
     			//Abre o Arquivo
             	Pont_Arq = fopen("arquivo", "ab+");
             	
+            	system ("cls");
+            	printf("Cadastrar Registros de Medicamentos\n");
             	//Solicita as Informações para Cadastrar
-                printf("Digite o Código do Novo Medicamento\n");
+                printf("Digite o Código do Novo Medicamento:\n");
                 scanf("%d", &Cadastrar.codigo);
 
-                printf("Digite o Nome do Novo Medicamento\n");
+                printf("Digite o Nome do Novo Medicamento:\n");
                 scanf("%s", Cadastrar.nome);
 
-                printf("Digite o PreÃ§o do Novo Medicamento\n");
+                printf("Digite o PreÃ§o do Novo Medicamento:\n");
                 scanf("%f", &Cadastrar.Preco);
 
                 printf("Necessita a RetenÃ§Ã£o da Receita?\nS - Sim \nN - Não\n");
@@ -148,8 +191,8 @@ int main()
                 break;
 
             case 2:
-				Mod_Exclusao();
-                printf("-------------\\-------------\\-------------\n\n");
+            	system ("cls");
+				ExcluiRegistro();
                 break;
             case 3:
                 printf("%d\n",Selecao);
