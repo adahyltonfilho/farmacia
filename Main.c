@@ -21,22 +21,26 @@ EstruturaRemedio Excluir;
 /*Método que imprime Todos os Registros*/
 void ImprimeTodosRegistros(){
     FILE *Arquivo = fopen("arquivo", "ab+");
-    int cont = 0;
-    system ("cls");
+    int cont = 1;
+    
     while(!(feof(Arquivo)))
     {
         fread(&Ler, sizeof(EstruturaRemedio), 1, Arquivo);
         if (!(feof(Arquivo))){
         printf("ITEM Nº %d: \n", cont);
-        printf("CODIGO: %d\n",Ler.codigo);
+        printf("CÓDIGO: %d\n",Ler.codigo);
         printf("NOME: %s\n",Ler.nome);
-        printf("PRECO: R$ %.2f\n",Ler.Preco);
-        printf("TRIBUTADO: %c\n",Ler.TipoRemedio);
-        if(Ler.TipoRemedio == 'S'){
-        	printf("%s\n",Ler.CRM);
+        printf("PREÇO: R$ %.2f\n",Ler.Preco);
+        
+        if(Ler.TipoRemedio == 'N'){
+        	printf("Obrigatório Reter a Receita: Não\n\n",Ler.TipoRemedio);
 		}
-        cont++;
+		else{
+			printf("Obrigatório Reter a Receita: Sim\n",Ler.TipoRemedio);
+			printf("CRM do Médico: %s\n\n",Ler.CRM);
+		}       
         }
+        cont++;
     }
     fclose(Arquivo);
 }
@@ -157,6 +161,7 @@ int main()
                 printf("%d\n",Selecao);
                 break;
             case 5:
+            	system ("cls");
                 ImprimeTodosRegistros();
                 break;
         }
