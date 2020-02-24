@@ -16,7 +16,7 @@ typedef struct {
 EstruturaRemedio Cadastrar;
 EstruturaRemedio Ler;
 EstruturaRemedio Excluir;
-
+	
 
 /*Método que imprime Todos os Registros*/
 void ImprimeTodosRegistros(){
@@ -24,23 +24,20 @@ void ImprimeTodosRegistros(){
     int cont = 1;
     
     while(!(feof(Arquivo)))
-    {
-        fread(&Ler, sizeof(EstruturaRemedio), 1, Arquivo);
-        if (!(feof(Arquivo))){
-        printf("ITEM Nº %d: \n", cont);
-        printf("CÓDIGO: %d\n",Ler.codigo);
-        printf("NOME: %s\n",Ler.nome);
-        printf("PREÇO: R$ %.2f\n",Ler.Preco);
-        
-        if(Ler.TipoRemedio == 'N'){
-        	printf("Obrigatório Reter a Receita: Não\n\n",Ler.TipoRemedio);
+    {   	
+    	fread(&Ler, sizeof(EstruturaRemedio), 1, Arquivo);
+    	if (!(feof(Arquivo))){
+        	printf("ITEM Nº %d: \n", cont);
+        	printf("CÓDIGO: %d\n",Ler.codigo);
+        	printf("NOME: %s\n",Ler.nome);
+        	printf("PREÇO: R$ %.2f\n",Ler.Preco);
+        	Ler.TipoRemedio=='S'?printf("Obrigatório Reter a Receita: Sim\nCRM do Médico: %s\n\n",Ler.CRM):printf("Obrigatório Reter a Receita: Não\n\n");
+			//printf("\n\n",Ler.CRM);
+			cont++;
 		}
-		else{
-			printf("Obrigatório Reter a Receita: Sim\n",Ler.TipoRemedio);
-			printf("CRM do Médico: %s\n\n",Ler.CRM);
-		}       
-        }
-        cont++;
+		else if (cont == 1){
+			printf("Arquivo sem nenhum registro de medicamento!\n");
+		}
     }
     fclose(Arquivo);
 }
@@ -55,7 +52,7 @@ void Mod_Exclusao()
 	arq_local_aux = fopen("arquivo_aux", "ab+");
 	int cont = 1;
 
-	printf("Digite o CÃ³digo do Medicamento Para ExclusÃ£o\n");
+	printf("Digite o Código do Medicamento Para Exclusão\n");
     scanf("%d", &codigo_local);
 
 	while(!(feof(arq_local)))
@@ -138,14 +135,14 @@ int main()
                 printf("Digite o PreÃ§o do Novo Medicamento\n");
                 scanf("%f", &Cadastrar.Preco);
 
-                printf("Necessita a RetenÃ§Ã£o da Receita?\nS - Sim \nN - NÃ£o\n");
+                printf("Necessita a RetenÃ§Ã£o da Receita?\nS - Sim \nN - Não\n");
                 scanf("%s", &Cadastrar.TipoRemedio);
 
                 if(Cadastrar.TipoRemedio == 'S'){
                     printf("Digite o CRM do Médico que receitou:\n");
                     scanf("%s",Cadastrar.CRM);
                 }
-                fwrite(&Cadastrar, sizeof(EstruturaRemedio), 2, Pont_Arq);
+                fwrite(&Cadastrar, sizeof(EstruturaRemedio), 1, Pont_Arq);
                 fclose(Pont_Arq);
 
                 break;
