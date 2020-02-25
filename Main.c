@@ -7,11 +7,12 @@
 
 /*Definindo os Tipos de Registros*/
 typedef struct {
-      char codigo[4];
-      char nome[100];
-      float Preco;
-      char TipoRemedio;
-      char CRM[25];
+	int Indice;
+    char codigo[4];
+    char nome[100];
+    float Preco;
+    char TipoRemedio;
+    char CRM[25];
 }EstruturaRemedio;
 
 /*Declarando os Registros Globais*/
@@ -29,6 +30,7 @@ void ImprimeTodosRegistros(){
     {   	
     	fread(&Ler, sizeof(EstruturaRemedio), 1, Arquivo);
     	if (!(feof(Arquivo))){
+    		printf("Indice %d: \n", Ler.Indice);
         	printf("ITEM Nº %d: \n", cont);
         	printf("CÓDIGO: %s\n",Ler.codigo);
         	printf("NOME: %s\n",Ler.nome);
@@ -97,10 +99,15 @@ ExcluirTodos(){
 	fclose(Pont_Arq);
 }
 
-/*Método que Exclui um registro
-void ExcluiRegistro(int Tipo, string Pesquisa){
-	
-}*/
+/*Método que Exclui um registro*/
+void ExcluiRegistro(int Tipo, char Pesquisa[]){
+	switch(Tipo){
+		case 1:
+			break;
+		case 2:
+			break;
+	}
+}
 
 /*Método Principal*/
 int main()
@@ -141,10 +148,17 @@ int main()
             	Pont_Arq = fopen("arquivo", "ab+");
             	
             	system ("cls");
-				
             	EstruturaRemedio Cadastrar;
-            	
-            	printf("Cadastrar Registros de Medicamentos\n");
+				fread(&Ler, sizeof(EstruturaRemedio), 2, Pont_Arq);
+				
+				if(Ler.Indice == 0){
+					Cadastrar.Indice = 1;
+					
+				}
+				else{
+					Cadastrar.Indice = Ler.Indice+1;
+				}
+		       	printf("Cadastrar Registros de Medicamentos\n");
             	
             	//Solicita as Informações para Cadastrar
                 printf("Digite o Código do Novo Medicamento:\n");
