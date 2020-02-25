@@ -25,7 +25,6 @@ EstruturaRemedio Excluir;
 void ImprimeTodosRegistros(){
     FILE *Arquivo = fopen("arquivo", "ab+");
     int cont = 1;
-    
     while(!(feof(Arquivo)))
     {   	
     	fread(&Ler, sizeof(EstruturaRemedio), 1, Arquivo);
@@ -47,51 +46,6 @@ void ImprimeTodosRegistros(){
 }
 
 /*Método que Exclui Todos*/
-/*void Mod_Exclusao()
-{
-	int codigo_local = 0;
-	FILE *arq_local;
-	FILE *arq_local_aux;
-	arq_local = fopen("arquivo", "ab+");
-	arq_local_aux = fopen("arquivo_aux", "ab+");
-	int cont = 1;
-
-	printf("Digite o Código do Medicamento Para Exclusão\n");
-    scanf("%d", &codigo_local);
-
-	while(!(feof(arq_local)))
-	{
-		fread(&Excluir, sizeof(EstruturaRemedio), 1, arq_local);
-		if (!(feof(arq_local)) && Excluir.codigo != codigo_local)
-		{
-			fwrite(&Excluir, sizeof(EstruturaRemedio), 1, arq_local_aux);
-		}
-	}
-	fclose(arq_local);
-	fclose(arq_local_aux);
-
-
-	arq_local_aux = fopen("arquivo_aux", "ab+");
-	while(!(feof(arq_local_aux)))
-	{
-		fread(&Excluir, sizeof(EstruturaRemedio), 1, arq_local_aux);
-		//fseek(Pont_Arq,cont, SEEK_CUR);
-		if (!(feof(arq_local_aux))){
-		printf("ITEM N %d: \n", cont);
-		printf("CODIGO: %d\n",Excluir.codigo);
-		printf("NOME: %s\n",Excluir.nome);
-		printf("PRECO: R$ %.2f\n",Excluir.Preco);
-		printf("TRIBUTADO: %c\n",Excluir.TipoRemedio);
-		printf("%s\n",Excluir.CRM);
-		cont++;
-		}
-	}
-	fclose(arq_local_aux);
-
-}
-*/
-
-/*Método que Exclui Todos*/
 ExcluirTodos(){
 	FILE *Pont_Arq;
 	Pont_Arq = fopen("arquivo", "wb+");
@@ -101,10 +55,38 @@ ExcluirTodos(){
 
 /*Método que Exclui um registro*/
 void ExcluiRegistro(int Tipo, char Pesquisa[]){
+	FILE *Arquivo = fopen("arquivo", "ab+");
+	int QTD = ftell (Arquivo);
+	QTD = QTD / 140;
+	EstruturaRemedio NovoArquivo[QTD];
+	
+	int cont = 0;
+	
+    while(!(feof(Arquivo)))
+    {   	
+    	fread(&Ler, sizeof(EstruturaRemedio), 1, Arquivo);
+    	if (!(feof(Arquivo))){
+    		printf("Indice %d: \n", Ler.Indice);
+        	printf("ITEM Nº %d: \n", cont);
+        	printf("CÓDIGO: %s\n",Ler.codigo);
+        	printf("NOME: %s\n",Ler.nome);
+        	printf("PREÇO: R$ %.2f\n",Ler.Preco);
+        	Ler.TipoRemedio=='S'?printf("Obrigatório Reter a Receita: Sim\nCRM do Médico: %s\n\n",Ler.CRM):printf("Obrigatório Reter a Receita: Não\n\n");
+			//printf("\n\n",Ler.CRM);
+			cont++;
+		}
+		else if (cont == 1){
+			printf("Arquivo sem nenhum registro de medicamento!\n\n");
+		}
+    }
+    fclose(Arquivo);
+	*/
 	switch(Tipo){
 		case 1:
+			Ler.codigo !=  Pesquisa ? NovoArquivo[cont] = Ler : printf("");
 			break;
 		case 2:
+			Ler.nome !=  Pesquisa ? NovoArquivo[cont] = Ler : printf("");
 			break;
 	}
 }
@@ -219,6 +201,8 @@ int main()
                 break;
             case 3:
                 printf("%d\n",Selecao);
+
+                
                 break;
             case 4:
                 printf("%d\n",Selecao);
